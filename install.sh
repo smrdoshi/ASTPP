@@ -152,7 +152,7 @@ ask_to_install_astpp ()
 		yum -y install wget
 		
 		clear
-		echo "============checking your working directory=================="
+		echo "============Checking working directory=================="
 		if [ $CURRENT_DIR == $ASTPP_SOURCE_DIR ]; then
 			echo "dir is '$CURRENT_DIR' and it's matched!!!"			
 		else
@@ -184,10 +184,10 @@ ask_to_install_astpp ()
 			read ACCEPT
 		done
 		if [ "$ACCEPT" != "yes" ] && [ "$ACCEPT" != "Yes" ] && [ "$ACCEPT" != "YES" ]; then
-			echo "License rejected !"
+			echo "License rejected!"
 			exit 0
 		else
-			echo "Licence accepted !"
+			echo "Licence accepted!"
 		fi
 		ask_to_user_yes_or_no "Do you want to install ASTPP?"
 		if [ ${TEMP_USER_ANSWER} = "yes" ]; then
@@ -204,7 +204,7 @@ ask_to_install_astpp ()
 			if 	[ ${TEMP_USER_ANSWER} = "yes" ]; then
 				ASTPP_USING_FREESWITCH="yes"			  
 			fi
-			ask_to_user_yes_or_no "Do you want to install ASTPP PERL PACKAGES?"
+			ask_to_user_yes_or_no "Do you want to install ASTPP Perl packages?"
 			if [ ${TEMP_USER_ANSWER} = "yes" ]; then
 				INSTALL_ASTPP_PERL_PACKAGES="yes"
 			fi			  
@@ -223,13 +223,6 @@ ask_to_install_astpp
 #################################
 
 clear
-if [ "${UPGRADE_ASTPP}" = "yes" ]; then
-		echo "Starting upgradation !!!!"
-		sleep 10
-else
-		echo "Starting installation !!!!"
-		sleep 10
-fi 
 echo -e "Are you ready?"
 read -n 1 -p "Press any key to continue ... "
 clear
@@ -245,14 +238,14 @@ install_freeswitch_for_astpp ()
 			
 			#-------------------MySQL setup in for freeswitch Start ------------------------
 			clear
-			echo "======================Mysql Installation Start======================="
+			echo "======================Mysql installation start======================="
 			sleep 20
 			echo "MySQL root password is set to : ${MYSQL_ROOT_PASSWORD}" 
 			echo "astppuser password is set to : ${ASTPPUSER_MYSQL_PASSWORD}"
 			echo mysql-server mysql-server/root_password password ${MYSQL_ROOT_PASSWORD} | debconf-set-selections
 			echo mysql-server mysql-server/root_password_again password ${MYSQL_ROOT_PASSWORD} | debconf-set-selections
 			apt-get install -y mysql-server php5-mysql
-			echo "======================Mysql Installation END======================="
+			echo "======================Mysql installation end======================="
 			sleep 20
 			#-------------------MySQL setup in for freeswitch End ------------------------
 			
@@ -262,7 +255,7 @@ install_freeswitch_for_astpp ()
 			# Install Freeswitch pre-requisite packages using yum
 			yum install -y wget git autoconf automake  expat-devel gnutls-devel libtiff-devel libX11-devel unixODBC-devel python-devel zlib-devel alsa-lib-devel libogg-devel libvorbis-devel perl perl-libs uuid-devel @development-tools gdbm-devel db4-devel libjpeg libjpeg-devel compat-libtermcap ncurses ncurses-devel ntp screen sendmail sendmail-cf gcc-c++ cpan @development-tools bison bzip2 curl curl-devel dmidecode git make mysql-connector-odbc openssl-devel unixODBC zlib pcre-devel speex-devel sqlite-devel ldns-devel libedit-devel perl-ExtUtils-Embed bc
 		fi  
-		curl --data "email=$EMAIL" --data "type=script" http://demo.astpp.org/lib/
+		curl --data "email=$EMAIL" --data "type=script" http://demo.astppbilling.org/lib/
 		echo "Lets first make sure that time is correct before we continue ... "
     
 		# set right time
@@ -295,7 +288,7 @@ install_freeswitch_for_astpp ()
 		cd freeswitch
 		./bootstrap.sh -j
 		# Edit modules.conf
-		echo "Enabling mod_xml_curl"
+		#echo "Enabling mod_xml_curl, mod_xml_cdr, "
 		sed -i "s#\#xml_int/mod_xml_curl#xml_int/mod_xml_curl#g" /usr/local/src/freeswitch/modules.conf
 		sed -i "s#\#mod_xml_cdr#mod_xml_cdr#g" /usr/local/src/freeswitch/modules.conf
 		sed -i '88i<!-- Manually Added Interface -->' /usr/local/freeswitch/conf/autoload_configs/modules.conf.xml
@@ -326,9 +319,8 @@ install_freeswitch_for_astpp ()
 astpp_freeswitch_startup_script ()
 {
 		if [ ! -d ${ASTPP_SOURCE_DIR} ]; then
-			echo "ASTPP source doesn't exists, downloading it from git !"
+			echo "ASTPP source doesn't exists, downloading it..."
 			cd /usr/src/
-			#git clone https://github.com/ASTPP/trunk.git
 			wget http://www.astppbilling.org/download/latest.tar.gz
 			tar -xzvf latest.tar.gz
 		fi 		
@@ -407,9 +399,8 @@ install_astpp ()
 {
 		# Download ASTPP
 		if [ ! -d ${ASTPP_SOURCE_DIR} ]; then
-			echo "ASTPP source doesn't exists, downloading it from git !"
+			echo "ASTPP source doesn't exists, downloading it..."
 			cd /usr/src/			
-			#git clone https://github.com/ASTPP/trunk.git
 			wget http://www.astppbilling.org/download/latest.tar.gz
 			tar -xzvf latest.tar.gz
    # 	fi
@@ -473,7 +464,7 @@ install_astpp ()
 			chmod -Rf 777 ${FS_SOUNDSDIR}
 		fi
 		if [ ${INSTALL_ASTPP_WEB_INTERFACE} = "yes" ]; then
-			echo "installing ASTPP web interface"
+			echo "Installing ASTPP web interface"
 			mkdir -p ${ASTPPDIR}		
 			#Copy configuration file
 			cp ${ASTPP_SOURCE_DIR}/astpp_confs/sample.astpp-config.conf ${ASTPPDIR}astpp-config.conf

@@ -62,7 +62,7 @@ mv ${CGIDIR}/cgi-bin /mnt/$BACKUP_DIR/
 rm -rf /usr/src/latest/
 rm -rf /usr/src/trunk/
 cd /usr/src/
-#git clone https://github.com/ASTPP/trunk.git
+
 wget http://www.astppbilling.org/download/latest.tar.gz
 tar -xzvf latest.tar.gz
 
@@ -106,4 +106,4 @@ filename_sql="astpp-upgrade-"$SQLFILE".sql";
 echo "New SQL File Name : "$filename_sql;
 [ -f $ASTPP_SOURCE_DIR/sql/$filename_sql ] && mysql -u${dbuser} -p${dbpass} ${dbname} < $ASTPP_SOURCE_DIR/sql/$filename_sql || echo "SQL File Not found"
 
-echo "**************** Your ASTPP Version Successfully Updated ******************"
+echo "**************** Your ASTPP Version Updated ******************"
