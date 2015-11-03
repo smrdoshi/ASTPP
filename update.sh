@@ -26,7 +26,7 @@ read -n 1 -p "Press any key to continue ..."
 TIME=`date +"%Y%m%d-%T"`
 BACKUP_DIR="astpp_$TIME"
 #ASTPP_SOURCE_DIR=/usr/src/trunk
-ASTPP_SOURCE_DIR="/usr/src/latest"
+ASTPP_SOURCE_DIR=/usr/src/latest
 ASTPPEXECDIR=/usr/local/astpp
 CGIDIR=/var/www
 WWWDIR=/var/www

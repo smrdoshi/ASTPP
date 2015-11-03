@@ -28,7 +28,7 @@ INSTALL_ASTPP="no"
 CURRENT_DIR="${PWD}"
 DOWNLOAD_DIR="/usr/src"
 #ASTPP_SOURCE_DIR="/usr/src/trunk"
-ASTPP_SOURCE_DIR="/usr/src/latest"
+ASTPP_SOURCE_DIR=/usr/src/latest
 ASTPP_HOST_DOMAIN_NAME="host.domain.tld"
 
 #ASTPP Configuration
@@ -151,21 +151,7 @@ ask_to_install_astpp ()
 		# License acceptance
 		yum -y install wget
 		
-		clear
-		echo "============Checking working directory=================="
-		if [ $CURRENT_DIR == $ASTPP_SOURCE_DIR ]; then
-			echo "dir is '$CURRENT_DIR' and it's matched!!!"			
-		else
-			echo "dir is '$CURRENT_DIR' and not matched!!!"
-			#mv -f ${CURRENT_DIR}/../trunk ${DOWNLOAD_DIR}/.
-			mv -f ${CURRENT_DIR}/../latest ${DOWNLOAD_DIR}/.
-			sleep 10
-			clear
-			echo "====================Starting installation again======================"
-			sleep 10
-			cd ${ASTPP_SOURCE_DIR} && chmod +x install.sh && ./install.sh			
-			clear
-		fi
+		clear		
 		echo "********************"
 		echo "License acceptance"
 		echo "********************"		
@@ -188,6 +174,20 @@ ask_to_install_astpp ()
 			exit 0
 		else
 			echo "Licence accepted!"
+			echo "============checking your working directory=================="
+			wget http://www.astppbilling.org/download/latest.tar.gz
+			tar -xzf latest.tar.gz
+			if [ $CURRENT_DIR == $ASTPP_SOURCE_DIR ]; then
+				echo "dir is '$CURRENT_DIR' and it's matched!!!"			
+			else			
+				echo "dir is '$CURRENT_DIR' and not matched!!!"
+				mv -f ${CURRENT_DIR}/latest ${DOWNLOAD_DIR}/.			
+				clear
+				echo "====================Starting installation again======================"
+				sleep 10
+				#cd ${ASTPP_SOURCE_DIR} && chmod +x install.sh && ./install.sh			
+				clear
+			fi
 		fi
 		ask_to_user_yes_or_no "Do you want to install ASTPP?"
 		if [ ${TEMP_USER_ANSWER} = "yes" ]; then
@@ -406,9 +406,10 @@ install_astpp ()
 			cd /usr/src/			
 			wget http://www.astppbilling.org/download/latest.tar.gz
 			tar -xzvf latest.tar.gz
-   # 	fi
+    	fi
     	if [ ${DIST} = "DEBIAN" ]; then
 			# Install ASTPP pre-requisite packages using apt-get
+			apt-get update
 			apt-get install -y apache2 apache2-threaded-dev php5 php5-dev php5-common php5-cli php5-gd php-pear php5-cli php-apc php5-curl libapache2-mod-php5 perl libapache2-mod-perl2 libxml2 libxml2-dev openssl libcurl4-openssl-dev gettext gcc g++
 			#echo "MySQL root password is set to : ${MYSQL_ROOT_PASSWORD}" 
 			#echo "astppuser password is set to : ${ASTPPUSER_MYSQL_PASSWORD}"
