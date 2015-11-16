@@ -277,7 +277,7 @@ install_freeswitch_for_astpp ()
 			apt-get remove --purge libtool && apt-get autoremove
 			cd /usr/local/src
 			wget http://gnumirror.nkn.in/libtool/libtool-1.5.14.tar.gz
-			tar -xzvf libtool-1.5.14.tar.gz && cd libtool-1.5.14
+			tar -xzf libtool-1.5.14.tar.gz && cd libtool-1.5.14
 			./configure && make && make install
 		#-----------------libtool Installation End------------------------------
 		
@@ -322,7 +322,7 @@ astpp_freeswitch_startup_script ()
 			echo "ASTPP source doesn't exists, downloading it..."
 			cd /usr/src/
 			wget http://www.astppbilling.org/download/latest.tar.gz
-			tar -xzvf latest.tar.gz
+			tar -xzf latest.tar.gz
 		fi 		
 		if [ ${DIST} = "DEBIAN" ]; then
 			adduser --disabled-password  --quiet --system --home ${FS_DIR} --gecos "FreeSWITCH Voice Platform" --ingroup daemon freeswitch
@@ -378,7 +378,7 @@ mySQL_for_astpp ()
 		sleep 5
 		#MYSQL_ROOT_PASSWORD=$(genpasswd)
 		#ASTPPUSER_MYSQL_PASSWORD=$(genpasswd)
-		#mysql -uroot -e "UPDATE mysql.user SET password=PASSWORD('${MYSQL_ROOT_PASSWORD}') WHERE user='root'; FLUSH PRIVILEGES;"
+		mysql -uroot -e "UPDATE mysql.user SET password=PASSWORD('${MYSQL_ROOT_PASSWORD}') WHERE user='root'; FLUSH PRIVILEGES;"
 		# Save MySQL root password to a text file in /root
 		echo ""
 		echo "MySQL password set to '${MYSQL_ROOT_PASSWORD}'. Remember to delete ~/.mysql_passwd" | tee ~/.mysql_passwd
@@ -405,7 +405,7 @@ install_astpp ()
 			echo "ASTPP source doesn't exists, downloading it..."
 			cd /usr/src/			
 			wget http://www.astppbilling.org/download/latest.tar.gz
-			tar -xzvf latest.tar.gz
+			tar -xzf latest.tar.gz
     	fi
     	if [ ${DIST} = "DEBIAN" ]; then
 			# Install ASTPP pre-requisite packages using apt-get
@@ -486,6 +486,11 @@ install_astpp ()
 			elif  [ ${DIST} = "CENTOS" ]; then
 				chown -Rf apache.apache ${WWWDIR}/astpp
 				cp ${ASTPP_SOURCE_DIR}/web_interface/apache/astpp.conf /etc/httpd/conf.d/astpp.conf
+				sed -i "s/SELINUX=enforcing/SELINUX=disabled/" /etc/sysconfig/selinux
+				sed -i "s/SELINUX=enforcing/SELINUX=disabled/" /etc/selinux/config
+				/etc/init.d/iptables stop
+				chkconfig iptables off
+				setenforce 0
 			fi
 			chmod -Rf 777 ${WWWDIR}/astpp
 		fi	
