@@ -1,10 +1,7 @@
 #!/bin/bash
 ###########################################################################
-# ASTPP - Open Source Voip Billing
-# Copyright (C) 2004, Aleph Communications
-#
-# Contributor(s)
-# "iNextrix Technologies Pvt. Ltd. - <astpp@inextrix.com>"
+# ASTPP - Open Source VoIP Billing Solution
+# Copyright (C) 2016, iNextrix Technologies Pvt. Ltd. (http://www.inextrix.com)
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,6 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
+#
 ############################################################################
 
 #################################
